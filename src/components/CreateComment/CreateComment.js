@@ -8,6 +8,8 @@ const CreateComment = (props) => {
   useEffect(() => {
     CommentService.getCommentsByPostId(props.match.params.id).then((res) => {
       setComments(res.data);
+    }).catch((error) => {
+      console.log(error)
     });
   }, []);
 
@@ -15,11 +17,11 @@ const CreateComment = (props) => {
     setIsCreateNewComment(true);
   };
 
-  const createNewCommentFunc = (comment, postId) => {  
+  const createNewCommentFunc = (comment, postId) => {
     let obArr = [];
     comments.map((comment) => {
-        obArr.push(comment);
-    })
+      obArr.push(comment);
+    });
     obArr.push(comment);
     setComments(obArr);
   };
@@ -39,7 +41,9 @@ const CreateComment = (props) => {
       </button>
       <div className="row">
         <CreateNewComment
-          commentObjectForTesting = {props.validatedValues != null ? props.validatedValues : null}
+          commentObjectForTesting={
+            props.validatedValues != null ? props.validatedValues : null
+          }
           postId={props.match.params.id}
           isCreateNewComment={isCreateNewComment}
           onCancel={onCancel}

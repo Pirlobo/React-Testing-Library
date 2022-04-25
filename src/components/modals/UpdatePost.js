@@ -1,23 +1,33 @@
 import React, { useEffect } from "react";
 import { Form, Modal, Input } from "antd";
-import PostService from "../../services/PostService"
+import PostService from "../../services/PostService";
 
 const UpdatePost = (props) => {
   const [form] = Form.useForm();
 
   const updatePost = (validatedValues) => {
-    PostService.updatePost(validatedValues, props.updatedPost.id).then((res) => {
-      props.updatePostFunc(res.data, props.updatedPost.id)
-      props.onCancel()
+    PostService.updatePost(validatedValues, props.updatedPost.id).then(
+      (res) => {
+        props.updatePostFunc(res.data, props.updatedPost.id);
+        props.onCancel();
+      }
+    ).catch((error) => {
+      console.log(error);
     });
-  }
+  };
   const handleOk = () => {
-    form.validateFields().then((validatedValues) => {
-      validatedValues = props.updatedPostObject != null ? props.updatedPostObject : validatedValues
-      updatePost(validatedValues);
-    }).catch((error) => {
-      console.log(error)
-    })  
+    form
+      .validateFields()
+      .then((validatedValues) => {
+        validatedValues =
+          props.updatedPostObject != null
+            ? props.updatedPostObject
+            : validatedValues;
+        updatePost(validatedValues);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   useEffect(() => {
@@ -37,7 +47,7 @@ const UpdatePost = (props) => {
         onCancel={props.onCancel}
       >
         <Form form={form} layout="vertical">
-        <Form.Item
+          <Form.Item
             label="Id"
             name="id"
             rules={[

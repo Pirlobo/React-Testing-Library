@@ -2,15 +2,11 @@ import {
   render,
   screen,
   fireEvent,
-  getByText,
-  act,
-  waitFor,
-  getByRole,
+  waitFor
 } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import CreateComment from "../CreateComment";
 import "@testing-library/jest-dom";
-import { logRoles } from "@testing-library/dom";
 
 Object.defineProperty(window, "matchMedia", {
   writable: true,
@@ -69,17 +65,16 @@ describe("UsersList", () => {
     render(<CreateCommentPage />);
 
     const buttonElement = screen.getByRole("button");
-    
+
     fireEvent.click(buttonElement);
     await waitFor(() => {
       createCommentBtn = screen.getByText(/OK/).closest("button");
     });
 
-    fireEvent.click(createCommentBtn)
-        await waitFor(() => {
-            const comment = screen.getByTestId(`comment-item-501`);
-            expect(comment).toBeInTheDocument();
-        })
-    
+    fireEvent.click(createCommentBtn);
+    await waitFor(() => {
+      const comment = screen.getByTestId(`comment-item-501`);
+      expect(comment).toBeInTheDocument();
+    });
   });
 });

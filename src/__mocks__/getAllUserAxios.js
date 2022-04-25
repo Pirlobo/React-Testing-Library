@@ -229,6 +229,7 @@ export default {
           "catchPhrase": "Centralized empowering task-force",
           "bs": "target end-to-end models"
         }
-      }
+      },
+     
     ] })
   };

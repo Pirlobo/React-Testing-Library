@@ -4,21 +4,32 @@ import CommentService from "../../services/CommentService";
 
 const CreateNewComment = (props) => {
   const [form] = Form.useForm();
-  
+
   const addComment = (validatedValues) => {
     CommentService.createComments(validatedValues, props.postId).then((res) => {
-      console.log(res.data)
-      props.createNewCommentFunc(res.data, props.postId)
-      props.onCancel()
+      console.log(res.data);
+      props.createNewCommentFunc(res.data, props.postId);
+      props.onCancel();
       form.resetFields();
     });
-  }
+  };
   const handleOk = () => {
-    form.validateFields().then((validatedValues) => {
-      addComment(validatedValues);
-    }).catch((error) => {
-      addComment(JSON.stringify(props.commentObjectForTesting));
-    })  
+    form
+      .validateFields()
+      .then((validatedValues) => {
+        addComment(validatedValues);
+      })
+      .catch((error) => {
+        // if commentObjectForTesting is present, then test the function
+        if(props.commentObjectForTesting){
+          addComment(JSON.stringify(props.commentObjectForTesting));
+        }
+        // not valid input
+        else{
+          console.log(error)
+        }
+        
+      });
   };
 
   return (
@@ -30,7 +41,7 @@ const CreateNewComment = (props) => {
         onCancel={props.onCancel}
       >
         <Form form={form} layout="vertical">
-        <Form.Item
+          <Form.Item
             label="Id"
             name="id"
             rules={[
